@@ -271,3 +271,40 @@ tsc --init
 
 ### 7.6. strict 옵션
 - 얼마나 엄격하게 문법 체크를 할 것인가?
+- 
+```json
+{
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "outDir": "./disk",
+    "strict": true,
+  }
+}
+```
+- 오류
+```ts
+
+```
+
+### 7.7. moduleDetction 옵션
+- `중복 선언 에러` 제어
+- TypeScript 는 기본적으로 전역 모듈로 인식함.
+```json
+{
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "outDir": "./disk",
+    "strict": true,
+    "moduleDetection": "force",
+  }
+}
+```
+
+## 8. tsconfig.json 정리
+- React 프로젝트, Next 프로젝트, Express 프로젝트, Nest 프로젝트 등
+- 모두 TypeScript 로 작성 권장됨.
+- tsconfig.json 이 상당히 중요합니다.
