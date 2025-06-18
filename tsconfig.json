@@ -1,0 +1,10 @@
+{
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "outDir": "./disk",
+    "strict": true,
+    "moduleDetection": "force",
+  }
+}
