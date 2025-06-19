@@ -1,4 +1,4 @@
-# Primitive 타입
+# Primitive 타입 (원시 데이터)
 - 기본적인 데이터 종류
 - 변수명 : DataType = 값
 
@@ -17,12 +17,22 @@ const num_7: number = NaN;
 ```ts
 const str_1 = "안녕";
 const str_2: string = "반가워";
-let str_3: string|number = "김밥";
-str_3 = "맛있다";
-str_3 = 1000;
+let str_3:string = "맛있다";
+const str_4:string = `백틱`
 ```
 
 ## 3. boolean 타입
+- 프로그래밍에서 false 처럼 사용되는 값 (falshy 한 값)
+- 아래의 경우는 falshy 하다고 판단하여 false 로 인정
+```txt
+false
+""        비어있는 문자열은 if 문등에 사용할 때 false 로 판단
+0         숫자 0은 if 문등에 사용할 때 false 로 판단
+null      if 문등에 사용할 때 false 로 판단
+undefined if 문등에 사용할 때 false 로 판단
+NaN       if 문등에 사용할 때 false 로 판단
+```
+
 ```ts
 const bool_1 = false;
 const bool_2: boolean = false;
@@ -37,6 +47,7 @@ let null_2:null = null;
 ```
 ## 5. undefined 타입
 - 프로그램이 초기값으로 세팅함
+- 값이 없다. 즉, 정의가 안되어 있다.
 ```ts
 let user:undefined = undefined;
 ```
@@ -70,7 +81,7 @@ let b: "안녕" = "안녕";
 let c: true = true;
 ```
 
-## 8. 정말 중복되지 않은 유일한 값
+## 8. 정말 `중복되지 않은 유일한 값` Symbol
 ```ts
 const sy = Symbol("age");
 const syS:symbol = Symbol("name");
