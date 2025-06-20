@@ -1,262 +1,64 @@
-# 조건문(Condition)
+# 함수 (function)
+- 데이터를 가공해서 원하는 결과를 자동으로 만들어 주는 기계(기능)
 
-## 1. if 문
-
-- 조건의 결과가 true 이면 { 안쪽 실행 }
-
+## 1. 기본형태
 ```ts
-const age: number = 18;
-if (age >= 18) {
-  console.log("성인이십니다.");
+function 함수명(parameter:type): returnType {
+  // 하고 싶은일
+  return returnValue;
 }
+
+함수명(argument)
 ```
 
-- 만약 { 한줄만 실행 한다면? }
+## 2. 언제 함수라는 것을 생성해야 할까
+- 하나의 과정이 너무 길다. (즉, 코드가 너무 길다.)
+- 동일한 코드가 2번이상 반복 작성해야 한다면?
+- 동일한 기능을 다른 사람에게 주어야 한다면?
 
-```ts
-const age: number = 18;
-if (age > 18) console.log("성인이시군요");
+## 3. 함수를 만들때 권장하는 방안
+- 반드시 설명서를 만들어 주자(`JSDoc`)
 
-if (age > 18) {
-  console.log("성인이시군요");
-  console.log("입장하세요");
-}
+## 4. 계산기 예제
+- 요구사항 명세서 작성
+```txt
+재료 : 숫자 2개가 재료
+기능 : 사칙연산 기능(+, -, *, /)
 ```
-
-- if ~ else 구문
-
 ```ts
-const age: number = 10;
-if (age > 18) {
-  console.log("성인시군요");
-} else {
-  console.log("나중에 오세요");
-}
-```
+//JSDoc
+/**
+ * 사칙연산 함수
+ * - 숫자 2개를 입력하시면 결과가 나옵니다.
+ * - 기호는 4가지(+, -, * /)를 사용하실 수 있습니다.
+ *
+ * 사용예시
+ * ```javascript
+ * const result:number = calc(5, 4, "+");
+ * ```
+ * @param {number} a
+ * @param {number} b
+ * @param {string} sign
+ * @returns {number}
+ */
 
-- if ~ esle if ~ else if ~ else
-
-```ts
-const age: number = 25;
-if(age >= 40) {
-  console.log("40 대 이상입니다.");
-}else if(age >= 30){
-  console.log("30 대 이상입니다.");
-}else if(age >= 20) {
-  console.log("20 대 이상입니다.");
-}else{
-  console.log("10 대 입니다.");
-}
-```
-
-- 예측해봅시다.
-```ts
-const age: number = 40;
-// 논리적으로 잘못 코딩함.
-if(age >= 20) {
-  console.log("20 대 이상입니다.");
-}else if(age >= 30){
-  console.log("30 대 이상입니다.");
-}else if(age >= 40) {
-  console.log("40 대 이상입니다.");
-}else{
-  console.log("10 대 입니다.");
-}
-```
-
-- 예측해봅시다.
-```ts
-const result:number = 0;
-// falshy 한 값이므로 false 로 판단.
-// false, null, undefined, "", 0, NaN
-// result:string = " " 일 경우 false 가 아니다. 공백문자 취급
-// result === 0 으로 조건을 주면 true 로 판단.
-if (result) { 
-  console.log("결과 참");
-} else {
-  console.log("결과 거짓");
-}
-```
-## 2. switch 문
-- 값이 일치하는지 비교해서 코드 분기
-```ts
-const level:string = "5층";
-switch(level) {
-  case "5층": 
-    console.log("5층 내려요");
-    break;
-  case "4층": 
-    console.log("4층 내려요");
-    break;
-  case "3층": 
-    console.log("3층 내려요");
-    break;
-  case "2층": 
-    console.log("2층 내려요");
-    break;
-  case "1층": 
-    console.log("1층 내려요");
-    break;
-  default:
-    console.log("값이 아무것도 같지 않다.");
-    break;
-}
-```
-- switch 문의 값은 직접 원시값으로 작성시 오류 발생이 가능.
-- TypeScript 에 있는 `enum` 을 사용하시길 권장.
-- enum 은 정해진 값만 사용하게 권장할 때 (열거형)
-- 인터넷 상태 등에 대한 내용을 코드 할때 많이 사용
-
-```ts
-enum Level{
-  L1 = "1층",
-  L2 = "2층",
-  L3 = "3층",
-  L4 = "4층",
-  L5 = "5층"
-}
-const level:string = "5층";
-switch(level) {
-  case Level.L5: 
-    console.log("5층 내려요");
-    break;
-  case Level.L4: 
-    console.log("4층 내려요");
-    break;
-  case Level.L3: 
-    console.log("3층 내려요");
-    break;
-  case Level.L2: 
-    console.log("2층 내려요");
-    break;
-  case Level.L1: 
-    console.log("1층 내려요");
-    break;
-  default:
-    console.log("값이 아무것도 같지 않다.");
-    break;
-}
-```
-
-- 네트워크 상태를 체크해 보자.
-```ts
-enum NetworkStatus {
-  Offlins = "Off",
-  Wifi = "wifi",
-  LTE = "LTE",
-  G5 = "5G",
-
-}
-const net = NetworkStatus.G5;
-switch (net) {
-  case NetworkStatus.G5 :
-    break;
-  case NetworkStatus.LTE :
-    break;
-  case NetworkStatus.Wifi :
-    break;
-  case NetworkStatus.Offline :
-    break;
-}
-```
-
-# 반복문 (Loop)
-
-- 조건이 참이면 코드를 반복 실행함.
-
-## 1. for
-- `조건이 참`이면서 `반복 횟수를 알때` 사용함.
-
-```ts
-const 반복횟수:number = 10;
-for (let 초기값:number = 0; 초기값 < 반복횟수; 초기값++;) {
-  // 코드 실행
-}
-
-const arr:number[] = [1, 2, 3];
-for(let i:number = 0; 1 < arr.length; i++) {
-  arr[i];
-}
-
-const num:number = 10;
-for (let i:number = 0; i < total; i++;) {
-  if (i === 5) {
-    break; // for 구문을 벗어남
-  }
-  // 실행코드
-}
-
-const num:number = 10;
-for (let i:number = 0; i < total; i++;) {
-  if (i === 5) {
-    continue; // 실행 코드를 건너뛰고 계속 반복
-  }
-  // 실행코드
-}
-
-const total: number = 10;
-for (let i:number = 0; i < total; i++;) {
-  for (let j:number = 0; j < 5; j++) {
-    if (j === 2) {
-      break;
+function calc (a:number, b:number, sign:string):number {
+    let result: number = 0;
+    
+    switch (sign) {
+        case ("+"):
+            result = a + b;
+            break;
+        case ("-"):
+            result = a - b;
+            break;
+        case ("*"):
+            result = a * b;
+            break;
+        case ("/"):
+            result = (a !== 0 && b !== 0) ? a / b : 0
+            break;
     }
-  }
-}
-
-```
-
-## 2. while
-- `조건이 참`이면서 `반복 횟수를 모를때` 사용함.
-```ts
-let count: number = 0;
-while (count < 5) {
-  // 실행하라.
-  count++; // 반드시 조건을 거짓으로 만들도록 코드 필요.
-}
-```
-
-## 3. do while
-- `일단 한번은 실행`하자. 그리고, `조건이 참`이면서 `반복 횟수를 모를때` 사용함.
-```ts
-// 아래 코드는 조건이 거짓이므로 한번도 실행되지 않는다.
-let count: number = 0;
-while (count < 5) {
-  // 실행하라.
-  count++; // 반드시 조건을 거짓으로 만들도록 코드 필요.
-}
-
-let tries:number = 0;
-do {
-  // 할일 코드 실행
-
-  // 무한 루프 방지 거짓을 만들 값
-  tries++;
-} while (tries < 5) {
-
-}
-```
-
-## 4. for ... of
-- 배열의 각각의 요소에 값을 알아낼때 사용함.
-
-```ts
-const arr:number[] = [1, 2, 3];
-for(let i:number = 0; 1 < arr.length; i++) {
-  arr[i];
-}
-
-for (let item of arr) {
-  item; // 1 2 3
-}
-```
-
-## 5. for ...in
-- `객체`의 `속성명`을 알아낼때 사용함.
-```ts
-const hong = {age:10, city:"daegu"};
-for(let item in hong) {
-  item; // age city
-
-  hong[item]; // 10 daegu
-}
+    return result;
+};
 ```
