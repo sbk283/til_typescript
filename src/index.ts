@@ -35,10 +35,10 @@ function calc (a:number, b:number, sign:string):number {
             result = a * b;
             break;
         case ("/"):
-            result = a / b;
+            result = (a !== 0 && b !== 0) ? a / b : 0
+            // 0으로 나누기 방지
             break;
     }
     return result;
 };
 
-calc(4,5,"+");
