@@ -1,17 +1,18 @@
-function 사용자인증(auth:boolean, fn: () => void) {
-    if (auth) {
-        fn();
-    } else {
-        console.log("권한이 없습니다.");
-    }
-};
+type ReturnType = { add: (item: string) => void; show: () => string[] };
+function createList(): ReturnType {
+  let itemArr: string[] = [];
 
-// 이용권한이 있습니다. 출력
-사용자인증(true, () => {
-    console.log("이용권한이 있습니다.");
-});
-
-// 권한이 없습니다. 출략
-사용자인증(false, () => {
-    console.log("이용권한이 없습니다.");
-});
+  return {
+    add(item: string): void {
+      itemArr.push(item);
+    },
+    show(): string[] {
+      return itemArr;
+    },
+  };
+}
+// itemArr; // Error 스코프 위반
+const myList = createList();
+myList.add("사과");
+myList.add("딸기");
+myList.show(); // ["사과", "딸기"]
