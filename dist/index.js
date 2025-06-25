@@ -168,16 +168,14 @@ console.log(apiData.length);
 for (let i = 0; i < apiData.length; i++) {
     console.log(`${i}번째의 내용 =====`);
     const data = apiData[i];
-    const arr = Object.entries(data);
-    console.log("arr : ", arr);
-    for (let item of Object.entries(data)) {
-    }
     // 속성명만 뽑기, 즉 key 만 뽑기
-    // for(let key in data) {
-    // console.log("키명 : ", key);
-    // const temp = data[key as keyof DataType];
-    // console.log("keyof : ", temp);
-    // }
+    for (let key in data) {
+        console.log("키명 : ", key);
+        const temp = data[key];
+        console.log("keyof : ", temp);
+        // console.log("키값 : ", data.key);
+        // console.log("키값 : ", data[key]);
+    }
 }
 ;
 export {};
