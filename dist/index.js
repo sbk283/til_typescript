@@ -1,15 +1,20 @@
-const member = {
-    userName: "뷔",
-    age: 30,
-    group: "BTS"
+class Animal {
+    constructor() {
+        this.eyes = 2;
+    }
+    cry() {
+    }
+    eat() {
+    }
 }
-// const {userName, age, group} = member;
+class Cat extends Animal {
+    꾹꾹이(){}
+}
 
-// 사용하지 않은 나머지 속성만 모으는 연산자
-const {...rest} = member;
-console.log(rest);
+new Cat();
 
-const {userName, ...who} = member;
+class Dog extends Animal {
+    달짖기(){}
+}
 
-console.log(userName);
-console.log(who);
+new Dog();
