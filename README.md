@@ -354,7 +354,7 @@ cat.eye; // public 이라서 마음대로 접근
 
 ```
 ## 8. 클래스에서 new 없이 사용가능한 속성과 메서드
-- `Math.PI, Math.random(), Math.floor ...` 등
+- `Math.PI, Math.random(), Math.floor() ...` 등
 - `static` 을 붙이면 new 없이 사용가능
 ```js
 class MathTool {
