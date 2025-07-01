@@ -1,237 +1,149 @@
-# 배열
-- https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array
-- 데이터의 종류와 상관없이 묶어서 관리함.
-- 데이터들은 순서(index) 로 접근함.
+# 객체(`{}`) 와 배열(`[]`) 의 반복문
 
-## 1. 배열 만드는 법
+## 1. 배열의 반복문
 
-```js
-const 배열명 = [요소1, 요소2, 요소3, ......];
-// 아래는 잘 활용하지 않음.
-const 배열명 = new Array(5); // 5개의 데이터를 담아둘 배열
-```
-
-```ts
-const 배열명: 종류[] = [요소1, 요소2, 요소3, ......];
-const 배열명: Array<종류> = [요소1, 요소2, 요소3, ......];
-
-// 아래는 잘 활용하지 않음.
-const 배열명: 종류[] = new Array(5); // 5개의 데이터를 담아둘 배열
-```
-
-## 2. 배열에 요소에 값을 찾아서 활용하기
-
-- index 는 `0` 번부터
+- for 문
 
 ```js
-const 배열명 = [요소1, 요소2, 요소3];
-배열명[0];
-배열명[1];
-배열명[2];
-```
-
-```ts
-const 배열명: 종류[] = [요소1, 요소2, 요소3];
-배열명[0];
-배열명[1];
-배열명[2];
-```
-
-## 3. 배열도 객체라서 속성이 있음. (`length`만 존재)
-
-```js
-const 배열명 = [요소1, 요소2, 요소3];
-배열명.length; // 3 개
-```
-
-```ts
-const 배열명: 종류[] = [요소1, 요소2, 요소3];
-배열명.length; // 3 개
-```
-
-## 4. 원본 배열이 변경되는 이미 만들어진 메서드
-- push : 배열에 마지막에 요소 `추가`
-```js
-const fruitsArray = ["사과", "딸기"];
-fruitsArray.push("수박"); // 사과 딸기 수박
-// 원본이 훼손됨
-```
-
-```ts
-const fruitsArray: string[] = ["사과", "딸기"];
-fruitsArray.push("수박"); // 사과 딸기 수박
-// 원본이 훼손됨
-```
-- pop : 배열에 마지막 요소 `제거`
-```js
-const fruitsArray = ["사과", "딸기"];
-fruitsArray.pop(); // 사과
-// 원본 배열이 훼손됨
-```
-
-- unshift : 배열에 첫번째 요소 `추가`
-```js
-const fruitsArray = ["사과", "딸기"];
-fruitsArray.unshift("수박"); // 수박 사과 딸기
-// 원본 배열이 훼손
-```
-
-- shift : 배열에 첫번째 요소 `제거`
-```js
-const fruitsArray = ["사과", "딸기"];
-fruitsArray.shift(); // 딸기
-// 원본 배열이 훼손됨
-```
-
-- splice : 배열에 요소 `추가` 또는 `제거`
-```js
-const fruitsArray = ["사과", "딸기", "수박"];
-fruitsArray.splice(1, 2); // 사과
-// 원본 배열이 훼손됨
-```
-
-- sort : 배열에 요소 `정렬`
-```js
-const fruitsArray = ["사과", "딸기", "수박"];
-fruitsArray.sort(); // 딸기 사과 수박
-// 원본 배열이 훼손됨
-
-const enArr = ['k', 'o', 'r', 'e', 'a'];
-enArr.sort(); // a e k o r
-// 원본 배열이 훼손됨
-
-const numArr = [2,3,9,7,5];
-numArr.sort(); // 2 3 5 7 9
-// 원본 배열이 훼손됨
-
-const numArr2 = [1,12,3,19,7,5];
-numArr2.sort(); // 1 3 5 7 12 19
-// 위의 결과는 일반적이지 않다.
-// 올림차순
-numArr2.sort((a, b) => a - b); // 1 3 5 7 12 19
-// 내림차순
-numArr2.sort((a, b) => b - a); // 19 12 7 5 3 1
-// 원본 배열이 훼손됨
-```
-
-```ts
-const fruitsArray: string[] = ["사과", "딸기", "수박"];
-fruitsArray.sort(); // 딸기 사과 수박
-// 원본 배열이 훼손됨
-
-const enArr: string[] = ['k', 'o', 'r', 'e', 'a'];
-enArr.sort(); // a e k o r
-// 원본 배열이 훼손됨
-
-const numArr: number[] = [2,3,9,7,5];
-numArr.sort(); // 2 3 5 7 9
-// 원본 배열이 훼손됨
-
-const numArr2: number[] = [1,12,3,19,7,5];
-numArr2.sort(); // 1 3 5 7 12 19
-// 위의 결과는 일반적이지 않다.
-// 올림차순
-numArr2.sort((a, b) => a - b); // 1 3 5 7 12 19
-// 내림차순
-numArr2.sort((a, b) => b - a); // 19 12 7 5 3 1
-// 원본 배열이 훼손됨
-```
-- reverse : 배열의 순서를 `역`으로 정렬함
-```js
-const numArr = [1, 2, 12, 25, 37, 30];
-numArr.reverse(); // 30 37 25 12 2 1
-// 원본 배열이 훼손됨
-```
-
-- fill : 요소에 값을 `채움`
-```js
-const numArr = [2, 5, 4, 7];
-numArr.fill(0); // 0 0 0 0
-// 원본 배열이 훼손됨
-```
-
-## 5. 원본 배열을 복사해서 활용하는 이미 만들어진 메서드 (⭐️⭐️⭐️⭐️⭐️)
-- 데이터 불변성 (immutability) 을 유지하는 메서드
-- `원본 배열`과 `복사본 배열`의 `요소를 비교`해서 다르면 화면 새로 그림(re-rendering)
-
-### 5.1. map
-- 원본 배열을 복사하여 새로운 배열 생성
-```js
-const 원본배열 = [1, 2, 3, 4];
-const 복사본배열 = 원본배열.map(function (요소, 인덱스, 원본배열) {
-    return 요소; // [1, 2, 3, 4]
-});
-// html 예제
-const 복사본배열 = 원본배열.map(function (요소, 인덱스, 원본배열) {
-    return `<div>${요소}</div>`; // <div>1</div>, <div>2</div>, <div>3</div>, <div>4</div>
-});
-```
-
-## 5.2. filter
-- 조건이 `참`인 것만 모은 배열생성
-```js
-const numArr = [1, 4, 3, 5, 8, 9];
-const arr = numArr.filter(function (요소, 인덱스, 원본배열) {
-    if (요소 % 2) {
-        return 요소;
-    }
-});
-```
-
-```js
-const hong = {age: 10, study: true};
-const kim = {age: 20, study: false};
-const park = {age: 22, study: true};
-const studentArr = [hong, kim, park];
-const 공부한사람배열 = studentArr.filter(function (요소, 인덱스, 원본배열) {
-    if (요소.study) {
-        return 요소;
-    }
-});
-```
-
-```ts
-type Student = { age: number, study: boolean };
-const hong: Student = {age: 10, study: true};
-const kim: Student = {age: 20, study: false};
-const park: Student = {age: 22, study: true};
-const studentArr: Student[] = [hong, kim, park];
-const 공부한사람배열: Student[] = studentArr.filter(function (
-    요소, 인덱스, 원본배열) {
-    if (요소.study) {
-        return 요소;
-    }
-});
-```
-### 5.3. concat :여러개의 배열을 하나로 합친 배열
-```js
-const numArr = [2,4,5,8,2];
-const strArr = ['a', 'b', 'c'];
-const arr = numArr.concat(strArr); // [2, 4, 5, 8, 2, 'a', 'b', 'c']
-
-const result = [];
-for (let i = 0; i < numArr.length; i++) {
-    result.push(numArr[i]);
-}
-for (let i = 0; i < strArr.length; i++) {
-    result.push(strArr[i]);
+const arr = [1, 2, 3, 4];
+for (let i = 0; i < arr.length; i++) {
+  console.log(arr[i]); // 1, 2, 3, 4
 }
 ```
-### 5.4. join : 하나의 문자열로 배열을 표현하기
+
+- for each 문
+
 ```js
-const numArr = [2, 4, 5, 8, 2];
-const str = numArr.join(); // '2,4,5,8,2'
-const str2 = numArr.join("@"); // '2@4@5@8@2'
+const arr = [1, 2, 3, 4];
+arr.forEach(function (요소, 인덱스, 원본배열) {
+  console.log(요소); // 1, 2, 3, 4
+});
+// 화살표 구문이 많이 사용되는 형태이다.
+arr.forEach((item, index) => {
+  console.log(item); // 1, 2, 3, 4
+  console.log(index); // 0, 1, 2, 3
+});
 ```
 
-### 5.5. includes : 배열에 요소가 있는지 확인하기
+- map : 원본 배열에서 새로운 배열을 만든다. (⭐️⭐️⭐️⭐️⭐️)
+
 ```js
-const numArr = [2, 4, 5, 8, 2];
-const result = numArr.includes(4); // true
-const result2 = numArr.includes(6); // false
+const arr = [1, 3, 5, 2, 4];
+arr.map(function (요소, 인덱스, 원본배열) {
+  return 요소 + 1; // [2, 4, 6, 3, 5]
+});
+// 마찬가지로 화살표 구문이 많이 사용되는 형태이다.
+const resultArr = arr.map((요소, 인덱스) => {
+  return 요소 + 1; // 2, 4, 6, 3
+});
 ```
 
-```ts
-const numArr: number[] = [2, 4, 5, 8, 2];
-const result: boolean = numArr.includes(4); // true
-const result2: boolean = numArr.includes(6); // false
+```js
+const arr = [10, 20, 11, 24];
+const resultArr = arr.map((item, index) => {
+  return `<div class="box">${item}</div>`;
+});
+```
+
+- for in 문 (가능하면 사용하지 말 것)
+
+## 2. 객체의 반복문
+
+- for in 문
+
+```js
+const obj = {
+  age: 10,
+  nickName: "hong",
+  isMember: true,
+};
+for (속성명 in 원본객체) {
+  console.log(속성명); // age, nickName, isMember
+  console.log(원본객체[속성명]); // 10, hong, true
+}
+for (key in obj) {
+  console.log(key); // age, nickName, isMember
+  console.log(obj[key]); // 10, hong, true
+}
+```
+
+- Object.keys(객체).forEach : 참조만 하자.
+
+```js
+const obj = {
+  age: 10,
+  nickName: "hong",
+  isMember: true,
+};
+
+Object.keys(obj); // [age, nickName, isMember]
+Object.keys(obj).forEach((요소, 인덱스, 원본배열) => {
+  console.log(요소); // age, nickName, isMember
+});
+```
+
+- Object.values(객체).forEach : 참조
+
+```js
+Object.values(obj); // [10, "hong", true]
+Object.values(obj).forEach((요소, 인덱스, 원본배열) => {
+  console.log(요소); // 10, "hong", true
+});
+```
+
+- Object.entries(객체).forEach : 참조
+
+```js
+Object.entries(obj); // [[age, 10], [nickName, "hong"], [isMember, true]]
+Object.entries(obj).forEach((요소, 인덱스, 원본배열) => {
+  console.log(요소); // [age, 10], [nickName, "hong"], [isMember, true]
+});
+```
+
+## 3. 정리(우리가 필수로 알아야 할 것)
+
+- 배열의 반복문은 `for`, `배열.forEach`, `배열.map`, `for(키 in 객체)` 가 있다.
+
+# 값을 추출해서 보관하기(⭐️⭐️⭐️⭐️⭐️)
+
+## 1. `배열`의 값을 뽑아서 보관하기.
+
+```js
+const arr = ["사과", "딸기", "바나나"];
+const apple = arr[0]; // "사과"
+const strawberry = arr[1]; // "딸기"
+const banana = arr[2]; // "바나나"
+// 아래처럼 ... Spread 문법을 권장함
+const [a, b, c] = [...arr];
+console.log(a); // "사과"
+console.log(b); // "딸기"
+console.log(c); // "바나나"
+```
+
+- `Spread 문법`으로 2개의 배열을 하나로 합치기
+
+```js
+const arr = ["사과", "딸기", "바나나"];
+const resultArr1 = [5, arr[0], arr[1], arr[2], 3, 7, 1];
+const resultArr2 = [5, ...arr, 3, 7, 1];
+// rest 파라메터
+function 함수(...rest) {
+  console.log(rest); // [1, 2, 3]
+}
+함수(1, 2, 3);
+```
+
+## 2. `객체`의 값을 뽑아서 보관하기.(⭐️⭐️⭐️⭐️⭐️)
+
+```js
+const obj = {
+  age: 10,
+  job: "개발자",
+  city: "대구",
+};
+const a = obj.age; // 10
+const b = obj.job; // "개발자"
+const c = obj["city"]; // "대구"
+// 객체 구조 분해 할당(Destructuring)
+const { a, b, c } = obj;
+```
