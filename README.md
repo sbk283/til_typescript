@@ -8,9 +8,9 @@
 ## 1. 종류
 
 - XHR(XML Http Request)
-- Callback 함수
+- XHR + Callback 함수
 - Promise
-- Async/Await
+- `Async/Await` : 가장 많이 활용함
 
 ## 2. Dummy / Mockup 사이트 (백엔드 자료를 회신)
 
@@ -20,27 +20,27 @@
 
 ## 3. 백엔드 데이터 API 확인 프로그램
 
-- [Postman](https://www.postman.com/)
-- 백엔드 측에 `Swagger` 구성을 요청하면 참 좋다.
+- `Postman` (https://www.postman.com/)
+- 백엔드 측에 `Swagger` 구성을 요청하면 참 좋다. (좋아하진 않음)
 
 ## 4. XHR(XML Http Request)
 
-- `Request` 라는 단어를 알고 있어야한다. (자료 요청)
-- `Response` 라는 단어를 알고 있어야한다. (결과 회신)
-- `Query` 라는 단어를 알고 있어야한다. (질의문, Request 한 문자열)
+- `Request` 라는 단어를 알고 있어야한다. (자료 `요청`)
+- `Response` 라는 단어를 알고 있어야한다. (결과 `회신`)
+- `Query` 라는 단어를 알고 있어야한다. (`질의문`, Request 한 문자열)
 
 ### 4.1. 쿼리의 이해
 
 - `https://isearch.interpark.com/result?q=부산&referrer=`
 - 도메인 : `https://isearch.interpark.com`
-- 라우터 경로 : `/result`
+- `라우터` 경로 : `/result`
 - 쿼리(자료요청 문자열)의 시작 : `?`
 - 실제쿼리 : `q=부산&referrer=`
 
 ### 4.2. 실제쿼리 상세 설명
 
 - 실제쿼리 : `q=부산&referrer=`
-- 변수 q = `부산`
+- 변수 `q = 부산`
 - `&` 로 구분
 - referrer = `null`
 
@@ -50,16 +50,18 @@
 
 ### 4.4. 쿼리를 전송할때는 5가지 방식으로 보낼수 있다.
 
+- `REST API` 라 칭함(주소/라우터)
+
 - `CRUD` 방식
   - C : `Create` (생성)
   - R : `Read` (읽기)
   - U : `Update` (수정)
   - D : `Delete` (삭제)
-- GET : 자료를 주세요. (DB 에서 자료 읽고 결과 회신)
-- POST : 자료를 전송합니다. (DB 에서 자료 한개 추가)
-- DELETE : 자료를 삭제하세요. (DB 에서 자료 한개 삭제)
-- PUT : 하나의 자료내용 전부를 교체하세요. (DB 에서 자료 한개 전체수정)
-- PATCH : 하나의 자료내용중 한 부분만 수정하세요. (DB 에서 자료 한개 중 일부수정)
+- `GET` : 자료를 주세요. (DB 에서 자료 읽고 결과 회신)
+- `POST` : 자료를 전송합니다. (DB 에서 자료 한개 추가)
+- `DELETE` : 자료를 삭제하세요. (DB 에서 자료 한개 삭제)
+- `PUT` : 하나의 자료내용 `전부를 교체`하세요. (DB 에서 자료 한개 전체수정)
+- `PATCH` : 하나의 자료내용중 `한 부분만 수정`하세요. (DB 에서 자료 한개 중 일부수정)
 
 ### 4.5. XHR 로 비동기 작업해 보기
 
@@ -110,7 +112,7 @@
         xhr.send();
         xhr.onload = function () {
           if (xhr.status === 200) {
-            console.logt(xhr.responseText);
+            console.log(xhr.responseText);
           } else if (xhr.status === 404) {
             console.log("주소 및 쿼리 확인하세요.");
           } else if (xhr.status === 505) {
@@ -157,6 +159,61 @@
   </body>
 </html>
 ```
+
+- TypeScript 에서 수정해보기 1
+
+```ts
+function getPosts(): void {
+  // 1. xhr 객체를 만든다.
+  const xhr: XMLHttpRequest = new XMLHttpRequest();
+
+  // 2. 백엔드에서 알려준 주소로 접속한다.
+  // xhr.open("방식", "주소")
+  xhr.open("GET", "https://jsonplaceholder.typicode.com/posts");
+
+  // 3. 만들어든 xhr 을 전송합니다.
+  xhr.send();
+
+  // 4. 백엔드에서 회신된 결과가 오면 실행합니다.
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      console.log(xhr.responseText);
+    } else if (xhr.status === 404) {
+      console.log("없는 페이지로 접속하셨습니다.");
+    } else if (xhr.status === 505) {
+      console.log("서버가 꺼졌습니다. 잠시 후 다시 시도해주세요.");
+    }
+  };
+  // 요청하기
+  getPosts();
+```
+
+- TypeScript 에서 수정해보기 2
+
+```ts
+function getAlbums(): void {
+  const xhr: XMLHttpRequest = new XMLHttpRequest();
+  xhr.open("GET", "https://jsonplaceholder.typicode.com/albums");
+  xhr.send();
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      console.log(xhr.responseText);
+    } else if (xhr.status === 404) {
+      console.log("주소 및 쿼리 확인하세요.");
+    } else if (xhr.status === 505) {
+      console.log("서버가 전원이 꺼졌습니다. 다시 시도해주세요.");
+    }
+  };
+}
+getAlbums();
+```
+
+#### 4.5.1. XHR HTTP 에러
+
+- `404` : 요청한 주소가 잘못되었거나, 해당 자료가 없습니다.
+  - 대부분 프론트엔드 잘못
+- `505` : 서버가 꺼져있거나, 서버가 응답하지 않습니다.
+  - 대부분 백엔드 잘못
 
 ### 4.6. 콜백함수로 개선해 보기
 
@@ -223,6 +280,59 @@
 </html>
 ```
 
+- TypeScript 에서 수정해보기
+
+```ts
+/**
+ * 지정된 주소로 Http 요청을 보내고 결과를 함수로 처리함.
+ *
+ * @param {string} addr - 요청을 보낼 URL (예: "posts", "albums")
+ * @param {"GET"|"POST"|"PUT"|"DELETE"|"PATCH" } method - HTTP 메소드 종류
+ * @param {(responseText:string) => void} callback - 요청 성공시 실행할 콜백함수
+ */
+
+type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+type Callback = (responseText: string) => void;
+
+function getData(addr: string, method: Method, callback: Callback): void {
+  const url: string = `https://jsonplaceholder.typicode.com/${addr}`;
+  const xhr: XMLHttpRequest = new XMLHttpRequest();
+  xhr.open(method, url);
+  xhr.send();
+  xhr.onload = function () {
+    if (xhr.status === 200) {
+      // 콜백함수 자리
+      callback(xhr.responseText);
+    } else if (xhr.status === 404) {
+      console.log(`${addr} 의 쿼리가 잘못되었습니다. 확인하세요.`);
+    } else if (xhr.status === 505) {
+      console.log("서버가 오류입니다. 다시 시도해주세요.");
+    }
+  };
+}
+
+function postsParse(_data: string): void {
+  console.log("게시글 결과 ==== ");
+  console.log(_data);
+}
+function albumsParse(_data: string): void {
+  console.log("앨범 결과 ==== ");
+  console.log(_data);
+}
+function photosParse(_data: string): void {
+  console.log("사진 결과 ==== ");
+  console.log(_data);
+}
+function todosParse(_data: string): void {
+  console.log("할일 결과 ==== ");
+  console.log(_data);
+}
+getData("posts", "GET", postsParse);
+getData("albums", "GET", albumsParse);
+getData("photos", "GET", photosParse);
+getData("todos", "GET", todosParse);
+```
+
 ### 4.7. HTTP Status의 이해
 
 ## 5. Promise
@@ -244,32 +354,164 @@
 
 ### 5.3. Promise chaining 예제
 
-```js
-return new Promise(function (resolve, rejected) {
-  // 하고 싶은 XHR
-  const xhr = new XMLHttpRequest();
-  xhr.open(method, url);
-  xhr.send();
-  xhr.onload = function () {
-    if (xhr.status === 200) {
-      // 성공함수 자리
-      resolve(xhr.responseText);
-    } else if (xhr.status === 404) {
-      rejected(`${addr} 의 쿼리가 잘못되었습니다. 확인하세요.`);
-    } else if (xhr.status === 505) {
-      rejected("서버가 오류입니다. 다시 시도해주세요.");
-    } else {
-      rejected(`알수 없는 오류입니다. ${xhr.status}`);
-    }
-  };
-});
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 지정된 주소로 Http 요청을 보내고 결과를 함수로 처리함.
+       *
+       * @param {string} addr - 요청을 보낼 URL (예: "posts", "albums")
+       * @param {"GET"|"POST"|"PUT"|"DELETE"|"PATCH" } method - HTTP 메소드 종류
+       * @param {(responseText:string) => void} callback - 요청 성공시 실행할 콜백함수
+       */
+      function getData(addr, method) {
+        // 주소
+        const url = `https://jsonplaceholder.typicode.com/${addr}`;
+
+        return new Promise(function (resolve, rejected) {
+          // 하고 싶은 XHR
+          const xhr = new XMLHttpRequest();
+          xhr.open(method, url);
+          xhr.send();
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              // 성공함수 자리
+              resolve(xhr.responseText);
+            } else if (xhr.status === 404) {
+              rejected(`${addr} 의 쿼리가 잘못되었습니다. 확인하세요.`);
+            } else if (xhr.status === 505) {
+              rejected("서버가 오류입니다. 다시 시도해주세요.");
+            } else {
+              rejected(`알수 없는 오류입니다. ${xhr.status}`);
+            }
+          };
+        });
+      }
+
+      function postsParse(_data) {
+        console.log("게시글 결과 ==== ");
+        console.log(_data);
+      }
+      function albumsParse(_data) {
+        console.log("앨범 결과 ==== ");
+        console.log(_data);
+      }
+      function photosParse(_data) {
+        console.log("사진 결과 ==== ");
+        console.log(_data);
+      }
+      function todosParse(_data) {
+        console.log("할일 결과 ==== ");
+        console.log(_data);
+      }
+      getData("posts", "GET")
+        .then(function (res) {
+          postsParse(res);
+          return getData("albums", "GET");
+        })
+        .then(function (res) {
+          albumsParse(res);
+          return getData("photos", "GET");
+        })
+        .then(function (res) {
+          photosParse();
+          return getData("todos", "GET");
+        })
+        .then(function (res) {
+          todosParse();
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    </script>
+  </body>
+</html>
+```
+
+```ts
+/**
+ * 지정된 주소로 Http 요청을 보내고 결과를 함수로 처리함.
+ *
+ * @param {string} addr - 요청을 보낼 URL (예: "posts", "albums")
+ * @param {"GET"|"POST"|"PUT"|"DELETE"|"PATCH" } method - HTTP 메소드 종류
+ * @param {(responseText:string) => void} callback - 요청 성공시 실행할 콜백함수
+ */
+
+type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+
+function getData(addr: string, method: Method): Promise<string> {
+  // 주소
+  const url: string = `https://jsonplaceholder.typicode.com/${addr}`;
+
+  return new Promise(function (resolve, rejected) {
+    // 하고 싶은 XHR
+    const xhr: XMLHttpRequest = new XMLHttpRequest();
+    xhr.open(method, url);
+    xhr.send();
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        // 성공함수 자리
+        resolve(xhr.responseText);
+      } else if (xhr.status === 404) {
+        rejected(`${addr} 의 쿼리가 잘못되었습니다. 확인하세요.`);
+      } else if (xhr.status === 505) {
+        rejected("서버가 오류입니다. 다시 시도해주세요.");
+      } else {
+        rejected(`알수 없는 오류입니다. ${xhr.status}`);
+      }
+    };
+  });
+}
+
+function postsParse(_data: string) {
+  console.log("게시글 결과 ==== ");
+  console.log(_data);
+}
+function albumsParse(_data: string) {
+  console.log("앨범 결과 ==== ");
+  console.log(_data);
+}
+function photosParse(_data: string) {
+  console.log("사진 결과 ==== ");
+  console.log(_data);
+}
+function todosParse(_data: string) {
+  console.log("할일 결과 ==== ");
+  console.log(_data);
+}
+getData("posts", "GET")
+  .then(function (res) {
+    postsParse(res);
+    return getData("albums", "GET");
+  })
+  .then(function (res) {
+    albumsParse(res);
+    return getData("photos", "GET");
+  })
+  .then(function (res) {
+    photosParse(res);
+    return getData("todos", "GET");
+  })
+  .then(function (res) {
+    todosParse(res);
+  })
+  .catch(function (err) {
+    console.log(err);
+  });
 ```
 
 ## 6. Async/Await
 
-- 너무 좋아요
-- 너무 쉬워요
-- 단 규칙, 즉 문법을 지킬것
+- Promise 보다 좋다.
+- 사용하기 쉽다.
+- 단 규칙, 즉 문법을 지킬것.
 
 ### 6.1. 반드시 다음 처럼 코딩하셔야 합니다.
 
@@ -294,6 +536,59 @@ async function getAllData() {
 }
 ```
 
+- 실행하려는 함수는 반드시 try 블럭 안쪽에 배치
+- 실행하려는 함수는 반드시 앞에 await 을 붙인다.
+
+```js
+async function getAllData() {
+  try {
+    await getData("posts", "GET");
+    await getData("albums", "GET");
+    await getData("photos", "GET");
+    await getData("todos", "GET");
+  } catch (error) {}
+}
+```
+
+- TypeScript로 변환하기 (`async` 는 반드시)
+
+```ts
+type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+
+function getData(addr: string, method: Method): Promise<string> {
+  const url: string = `https://jsonplaceholder.typicode.com/${addr}`;
+  return new Promise(function (resolve, rejected) {
+    // 하고 싶은 XHR
+    const xhr: XMLHttpRequest = new XMLHttpRequest();
+    xhr.open(method, url);
+    xhr.send();
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        // 성공함수 자리
+        resolve(xhr.responseText);
+      } else if (xhr.status === 404) {
+        rejected(`${addr} 의 쿼리가 잘못되었습니다. 확인하세요.`);
+      } else if (xhr.status === 505) {
+        rejected("서버가 오류입니다. 다시 시도해주세요.");
+      } else {
+        rejected(`알수 없는 오류입니다. ${xhr.status}`);
+      }
+    };
+  });
+}
+// 타입스크립트로 변경
+async function getAllData(): Promise<void> {
+  try {
+    const posts: string = await getData("posts", "GET");
+    const albums: string = await getData("albums", "GET");
+    const photos: string = await getData("photos", "GET");
+    const todos: string = await getData("todos", "GET");
+  } catch (error) {
+    console.log(error);
+  }
+}
+```
+
 ### 6.2. XHR 대신 `fetch` 를 사용합니다.
 
 ```js
@@ -307,6 +602,38 @@ async function getData(addr, method) {
     return null;
   } catch (error) {
     console.log(error);
+  }
+}
+```
+
+- TypeScript 로 변경해보기
+
+```ts
+type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+
+async function getData<T>(
+  addr: string,
+  method: Method
+): Promise<T | undefined> {
+  const url: string = `https://jsonplaceholder.typicode.com/${addr}`;
+  try {
+    const response: Response = await fetch(url, { method });
+    if (response.ok) {
+      const result: T = await response.json();
+      return result;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+type PostType = { userId: number; id: number; title: string; body: string };
+type AlbunsType = { userId: number; id: number; title: string };
+// 전체 POSTS 글 가져오기
+async function getPosts() {
+  try {
+    const res = await getData<PostType[]>("posts", "GET");
+  } catch (error) {
+    console.log(`${error}가 발생했습니다.`);
   }
 }
 ```
