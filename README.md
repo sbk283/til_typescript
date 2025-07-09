@@ -98,3 +98,4 @@ class Dog implements 약속타입 {
 - 여러 타입을 조합한다. : type 권장
 - 복잡한 타입(속성에 함수, 유니온 등등) : type 권장
 - 여러명에서 작업을 한다면 : interface 권장
+- 외부라이브러는 일반적으로 interface 로 작성되어짐.
