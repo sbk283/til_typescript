@@ -1,4 +1,13 @@
-// 입력값 반환하기
-function returnSame(input: any): any {
-  return input;
+class TodoStorage<T> {
+  private items: T[] = [];
+  add(item: T): void {
+    this.items.push(item);
+  }
+  read(): T[] {
+    return this.items;
+  }
 }
+
+const result = new TodoStorage<string>();
+result.add("아이유");
+result.read();
