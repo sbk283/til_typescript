@@ -1,13 +1,12 @@
-class TodoStorage<T> {
-  private items: T[] = [];
-  add(item: T): void {
-    this.items.push(item);
-  }
-  read(): T[] {
-    return this.items;
-  }
+function getScore(subjcet: string, score: number) {
+  return { total: 100, grade: "A" };
 }
+/**
+ * ReturnType 은 함수의 리턴 데이터 종류 추출
+ *  {
+      total: number;
+      grade: string;
+  }
+ */
 
-const result = new TodoStorage<string>();
-result.add("아이유");
-result.read();
+type ScoreType = ReturnType<typeof getScore>;
