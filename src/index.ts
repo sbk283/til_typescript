@@ -1,16 +1,19 @@
-interface Animal {
+interface Dog {
   name: string;
   age: number;
 }
-interface Human {
+interface Cat {
   name: string;
   age: number;
-  address: string;
 }
 
-type AnimalHuman = Animal | Human;
-const temp: AnimalHuman = {
-  address: "대구",
-  age: 20,
-  name: "홍길동",
+type DogCat = Dog | Cat;
+
+function isDog(a: DogCat): a is Dog {
+  return (a as Dog).age !== undefined;
+}
+
+const pp: DogCat = {
+  name: "Buddy",
+  age: 5,
 };
