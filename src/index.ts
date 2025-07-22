@@ -1,19 +1,13 @@
-interface Dog {
-  name: string;
-  age: number;
+interface LoadingState {
+  type: "loading";
+  data: string[];
 }
-interface Cat {
-  name: string;
-  age: number;
-}
-
-type DogCat = Dog | Cat;
-
-function isDog(a: DogCat): a is Dog {
-  return (a as Dog).age !== undefined;
+interface ErrorState {
+  type: "error";
+  message: string;
 }
 
-const pp: DogCat = {
-  name: "Buddy",
-  age: 5,
-};
+type FetchStatus = LoadingState | ErrorState;
+
+// type StatusType = "loading" | "error"
+type StatusType = FetchStatus["type"];
