@@ -1,13 +1,41 @@
-interface LoadingState {
-  type: "loading";
-  data: string[];
+interface Pet {
+  legs: number;
+  bark(): void;
 }
-interface ErrorState {
-  type: "error";
-  message: string;
+interface Animal {
+  name: string;
+  age: number;
+}
+class Cat implements Pet, Animal {
+  name: string;
+  age: number;
+  legs: number;
+  constructor(name: string, age: number, legs: number) {
+    this.name = name;
+    this.age = age;
+    this.legs = legs;
+  }
+  bark(): void {}
 }
 
-type FetchStatus = LoadingState | ErrorState;
+type AnimalPet = Pet & Animal;
+const d: AnimalPet = {
+  name: "댕댕이",
+  age: 2,
+  legs: 4,
+  bark() {
+    console.log("멍멍");
+  },
+};
 
-// type StatusType = "loading" | "error"
-type StatusType = FetchStatus["type"];
+class Cat2 implements AnimalPet {
+  name: string;
+  age: number;
+  legs: number;
+  constructor(name: string, age: number, legs: number) {
+    this.name = name;
+    this.age = age;
+    this.legs = legs;
+  }
+  bark(): void {}
+}

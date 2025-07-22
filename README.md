@@ -1,144 +1,331 @@
-# ts 심화 - Key Value Mapping
+# ts 심화 - 클래스 정의하기
 
-- 객체의 키명과 값을 자동으로 맞추어주기(맵핑)
-
-## 샘플코드
-
-- 문제상황 1
+- `new`해서 새로운 `인스턴스 변수 타입 정의`
 
 ```ts
-// 백엔드 데이터 호출 관련한 타입 정의
-// 불편함 : 오타 발생 소지
-// 불편함 : 하나의 값을 변경하면 모두 찾아서 변경해야 함.
-type GlobalApiStatus = {
-  getUser: "Loading" | "Success" | "Error" | "Done";
-  getPageNum: "Loading" | "Success" | "Error" | "Done";
-  getPost: "Loading" | "Success" | "Error" | "Done";
-};
-```
-
-- 문제상황 1 개선을 위해서 enum
-
-```ts
-// 백엔드 데이터 호출 관련한 타입 정의
-// 불편함 : 오타 발생 소지 개선
-// 불편함 : 하나의 값을 변경하면 모두 찾아서 변경해야 개선
-enum State {
-  LOADING = "Loading",
-  SUCCESS = "Success",
-  ERROR = "Error",
-  DONE = "Done",
+// 클래스 만들기
+class SampleClass {}
+// 클래스로 인스턴스 변수 만들기(타입추론 잘됨)
+const ins = new SampleClass();
+// 클래스는 속성과 메서드 존재함.
+class Game {
+  name: string;
+  country: string;
+  download: number;
 }
 
-type GlobalApiStatus = {
-  getUser: State;
-  getPageNum: State;
-  getPost: State;
-};
-```
-
-- 문제상황 2
-  - `값은 코드개선으로 enum 을 사용하여 효율성`을 올려줌
-  - 그러나 `키명은 오타`를 내거나, `키명시 변경`시 적용 부분이 개선하지 못함.
-
-```ts
-// 백엔드 데이터 호출 관련한 타입 정의
-// 불편함 : 오타 발생 소지 개선
-// 불편함 : 하나의 값을 변경하면 모두 찾아서 변경해야 개선
-enum State {
-  LOADING = "Loading",
-  SUCCESS = "Success",
-  ERROR = "Error",
-  DONE = "Done",
-}
-
-type GlobalApiStatus = {
-  getUser: State;
-  getPageNum: State;
-  getPost: State;
-};
-
-// 아래의 방식으로 나만의 타입을 정의할 수 있다.
-// 여전히 문제사항은 개선되지 않음.
-type UserGetApi = {
-  getUser: GlobalApiStatus["getUser"];
-  getPageNum: GlobalApiStatus["getPageNum"];
-  getPost: GlobalApiStatus["getPost"];
-};
-// 자동으로 키명을 받아올 수 있다면? 오타 줄임, 코드 개선 효율적
-// 위의 코드와 완벽히 동일한 코드가 된다.
-type UserGetApiAuto = {
-  // 맵핑을 사용하면 된다.
-  [key in "getUser" | "getPageNum" | "getPost"]: GlobalApiStatus[key];
-};
-```
-
-- 위의 코드 역시 상당히 문법적으로 복잡하고, 가독성도 떨어짐
-- 유틸리티를 이용해 봄.
-
-```ts
-// Utility 를 활용해 보자.
-// 추출하기
-type UserGetApiPick = Pick<
-  GlobalApiStatus,
-  "getUser" | "getPageNum" | "getPost"
->;
-// 제외하기
-type UserGetApiOmit = Omit<GlobalApiStatus, "getPost">;
-```
-
-## keyof 활용하기
-
-```ts
-// keyof 이용하기 : 객체 타입에서 키명만 추출 가능
-type UserGetApiAll = keyof GlobalApiStatus;
-const key1: UserGetApiAll = "getUser";
-const key2: UserGetApiAll = "getPost";
-const key3: UserGetApiAll = "getPageNum";
-```
-
-```ts
-// 모두 가져오기
-// 오타 줄여줌. 자동으로 속성명과 타입을 추출해줌
 /**
- *  {
-      getUser: State;
-      getPageNum: State;
-      getPost: State;
+ * {
+ *  name:string
+ *  country:string
+ *  download:number
+ * }
+ */
+const game = new Game();
+// 사용자가 직접 값을 담아줌.
+game.name = "포트리스";
+game.country = "한국";
+game.download = 100;
+```
+
+```ts
+// 클래스는 속성과 메서드 존재함.
+class Game {
+  name: string;
+  country: string;
+  download: number;
+  // new 붙여서 실행하면 결과로  인스턴스 생성자
+  constructor(name: string, country: string, download: number) {
+    this.name = name;
+    this.country = country;
+    this.download = download;
   }
- */
-type UserGetApiAll2 = {
-  [key in keyof GlobalApiStatus]: GlobalApiStatus[key];
-};
-```
+}
 
-```ts
-// 원하는 속성의 이름과 타입을 추출했는데 나는 옵셔널로 설정하고 싶다.
 /**
- * type UserGetApiAll4 = {
-        getUser?: State;
-        getPageNum?: State;
-    }
+ * {
+ *  name:string
+ *  country:string
+ *  download:number
+ * }
  */
-type UserGetApiAll4 = {
-  [key in Exclude<keyof GlobalApiStatus, "getPost">]?: GlobalApiStatus[key];
-};
+const game = new Game("포트리스", "한국", 100);
 ```
 
-## 예제
+```ts
+// 클래스는 속성과 메서드 존재함.
+class Game {
+  // 속성
+  name: string;
+  country: string;
+  download: number;
+
+  // new 붙여서 실행하면 결과로  인스턴스 생성자
+  constructor(name: string, country: string, download: number) {
+    this.name = name;
+    this.country = country;
+    this.download = download;
+  }
+
+  // 메소드
+  introduce() {
+    return `${this.name} 게임은 ${this.country} 에서 개발, ${this.download} 인기가 있습니다`;
+  }
+}
+
+/**
+ * {
+ *  name:string
+ *  country:string
+ *  download:number
+ *  introduce(): string
+ * }
+ */
+const game = new Game("포트리스", "한국", 100);
+console.log(game.name);
+console.log(game.country);
+console.log(game.download);
+```
+
+## 클래스 요소 `readonly` 적용하기
 
 ```ts
-interface LoadingState {
-  type: "loading";
-  data: string[];
-}
-interface ErrorState {
-  type: "error";
-  message: string;
+// 클래스는 속성과 메서드 존재함.
+class Game {
+  // 속성
+  readonly name: string; // 읽기전용
+  readonly country: string; // 읽기전용
+  readonly download: number; // 읽기전용
+
+  // new 붙여서 실행하면 결과로  인스턴스 생성자
+  constructor(name: string, country: string, download: number) {
+    this.name = name;
+    this.country = country;
+    this.download = download;
+  }
+
+  // 메소드
+  introduce() {
+    return `${this.name} 게임은 ${this.country} 에서 개발, ${this.download} 인기가 있습니다`;
+  }
 }
 
-type FetchStatus = LoadingState | ErrorState;
+/**
+ * {
+ *  readonly name:string
+ *  readonly country:string
+ *  readonly download:number
+ *  introduce(): string
+ * }
+ */
+const game = new Game("포트리스", "한국", 100);
+console.log(game.name); // 읽을 수 있다.
+console.log(game.country); // 읽을 수 있다.
+console.log(game.download); // 읽을 수 있다.
+game.name = "김길동"; // Error 값의 변경 불가
+```
 
-// type StatusType = "loading" | "error"
-type StatusType = FetchStatus["type"];
+## 클래스 속성의 초기값 세팅
+
+```ts
+class Person {
+  // 필수 속성이다.
+  name: string;
+
+  // 직접 초기값 설정
+  age: number = 28;
+
+  // 속성이 있을 수도 있고 없을 수도 있다.
+  pet?: string;
+
+  // 속성의 초기값이 없을리가 없다.
+  // 초기값은 무조건 세팅한다.
+  dog!: string;
+
+  // new 하면 실행되는 인스턴스 생성자
+  constructor(name: string) {
+    this.name = name;
+    // 초기값 무조건 있다면
+    this.initialize();
+  }
+  initialize() {
+    // dog 속성은 반드시 초기화되어야 한다.
+    this.dog = "멍멍이";
+  }
+}
+// 타입추론이 성공적이다.
+/**
+ * {
+ * name: "홍길동"
+ * age: 28
+ * pet: undefined
+ * dog: "멍멍이"
+ * }
+ */
+const p = new Person("홍길동");
+```
+
+## 클래스는 타입도 가능, 값도 가능
+
+```ts
+class Dog {
+  name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  // 메서드 정의
+  bark() {
+    return `${this.name}가 이름입니다.`;
+  }
+}
+
+let d = new Dog("멍멍이");
+console.log(d.name); // 멍멍이
+d.bark();
+// 코드중에 값을 변경하겠다.
+// d = "고양이"; // Error 타입오류 발생
+d = { name: "고양이", bark: () => "고양이 야옹~" };
+```
+
+## Interface 활용
+
+- 일반적으로 js 에는 없는 문법
+- 오로지 ts에서만 가능(C++, C#, Java 등에서 사용)
+
+```ts
+// interface : 클래스에서는 약속을 지켜라
+interface Animal {
+  name: string;
+  age: number;
+  jump(): string;
+}
+
+class Dog implements Animal {
+  name: string;
+  age: number;
+  constructor() {}
+  jump() {
+    return `${this.name} 이 ${this.age}살입니다.`;
+  }
+}
+```
+
+- 추가도 가능하다.
+
+```ts
+// interface : 클래스에서는 약속을 지켜라
+interface Animal {
+  name: string;
+  age: number;
+  jump(): string;
+}
+
+class Dog implements Animal {
+  name: string;
+  age: number;
+
+  // 추가도 가능하다.
+  breez: string;
+
+  constructor(name: string, age: number, breez: string) {
+    this.name = name;
+    this.age = age;
+    this.breez = breez;
+  }
+
+  jump() {
+    return `${this.name} 이 ${this.age}살입니다.`;
+  }
+  // 추가도 가능하다.
+  dance() {}
+}
+
+const d = new Dog("댕댕이", 10, "발발이");
+```
+
+## class 타입 추론
+
+```ts
+// interface : 클래스에서는 약속을 지켜라
+interface Animal {
+  name: string;
+  age: number;
+  jump(): string;
+}
+
+class Dog implements Animal {
+  name: string;
+  age: number;
+
+  // 추가도 가능하다.
+  breez: string;
+
+  constructor(name: string, age: number, breez: string) {
+    this.name = name;
+    this.age = age;
+    this.breez = breez;
+  }
+
+  jump() {
+    return `${this.name} 이 ${this.age}살입니다.`;
+  }
+  // 추가도 가능하다.
+  dance() {}
+}
+
+const d = new Dog("댕댕이", 10, "발발이");
+
+// 타입을 체크해주는 함수 만들기
+const ori: any = new Dog("오리", 5, "청둥오리");
+// 타입을 체크해서 맞다면 실행하자.
+function instanceOfDog(who: any): who is Dog {
+  return "dance" in who;
+}
+
+if (ori) {
+  ori; // const ori: any
+}
+
+if (instanceOfDog(ori)) {
+  ori; // const ori: Dog
+  // 타입 좁히기, Narrowing
+  ori.dance();
+}
+```
+
+```ts
+function instanceOfAnimal(who: any): who is Animal {
+  return "jump" in who;
+}
+if (instanceOfAnimal(ori)) {
+  ori; // const ori: Animal
+  // 타입 좁히기, Narrowing
+  ori.jump();
+}
+```
+
+## interface 여러 개를 활용한 타입추론
+
+```ts
+type AnimalPet = Pet & Animal;
+const d: AnimalPet = {
+  name: "댕댕이",
+  age: 2,
+  legs: 4,
+  bark() {
+    console.log("멍멍");
+  },
+};
+
+class Cat2 implements AnimalPet {
+  name: string;
+  age: number;
+  legs: number;
+  constructor(name: string, age: number, legs: number) {
+    this.name = name;
+    this.age = age;
+    this.legs = legs;
+  }
+  bark(): void {}
+}
 ```
