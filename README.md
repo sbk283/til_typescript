@@ -329,3 +329,198 @@ class Cat2 implements AnimalPet {
   bark(): void {}
 }
 ```
+
+## Inheritance (상속)
+
+- 확장
+
+```ts
+class Parent {
+  // 필수 속성
+  name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  dance() {
+    console.log(`${this.name}이 춤을 춥니다.`);
+  }
+}
+
+/**
+ * {
+ * name: "엄마",
+ * dance () => {}
+ * }
+ */
+const p = new Parent("엄마");
+p.name;
+p.dance();
+
+class Child extends Parent {
+  age: number;
+  constructor(age: number, name: string) {
+    super("엄마");
+    this.age = age;
+  }
+
+  sing() {
+    console.log(`${this.age}살 아이가 노래를 부릅니다.`);
+  }
+}
+/**
+ * {
+ * age: 10,
+ * sing () => {}
+ * }
+ */
+const c = new Child(10, "아이");
+c.age;
+c.sing();
+
+c.name;
+c.dance();
+```
+
+- 추가 내용
+
+```ts
+/**
+ * 잘 생각해 봅시다.
+ */
+
+const iuMom: Parent = new Parent("이아무개");
+
+// Childe 는 Parent 를 확장(extends)
+const iu: Child = new Child(28, "김아무개");
+
+// 상속받은 자식은 값으로서 부모에게 할당할 수 있다.
+const mom: Parent = iu;
+
+// 상속받은 자식에게 부모는 값으로 할당할 수 없다.
+const son: Child = iuMom; // Error
+```
+
+- case 1
+
+```ts
+class Animal {}
+class Cat extends Animal {}
+
+const 냐옹이: Cat = new Cat();
+const 동물: Animal = new Animal();
+
+// 아래는 클래스의 속성 및 메서드가 한개도 없으므로 가능함.
+const 모든동물: Animal = 냐옹이;
+const 옹이: Cat = 동물;
+```
+
+- case 2
+
+```ts
+class Animal {
+  name: string;
+}
+class Cat extends Animal {}
+
+const 냐옹이: Cat = new Cat();
+const 동물: Animal = new Animal();
+
+// 부모에게만 필수 속성이 있으므로 가능함.
+const 모든동물: Animal = 냐옹이;
+const 옹이: Cat = 동물;
+```
+
+- case 3
+
+```ts
+class Animal {}
+class Cat extends Animal {
+  age: number;
+}
+
+const 냐옹이: Cat = new Cat();
+const 동물: Animal = new Animal();
+
+// 부모는 속성이 없고 자식에게만 필수 속성이 있다.
+// 상황이 달라진다.
+const 모든동물: Animal = 냐옹이;
+// Cat 은 필수 속성인 age 가 필요하지만 Animal 에는 없다.
+const 옹이: Cat = 동물; // age가 없어서 오류가 발생함.
+```
+
+- case 4.
+
+```ts
+class Animal {
+  name: string;
+}
+class Cat extends Animal {
+  age: number;
+}
+
+const 냐옹이: Cat = new Cat();
+const 동물: Animal = new Animal();
+
+// 부모는 속성이 없고 자식에게만 필수 속성이 있다.
+// 상황이 달라진다.
+const 모든동물: Animal = 냐옹이;
+// Cat 은 필수 속성인 age 가 필요하지만 Animal 에는 없다.
+const 옹이: Cat = 동물; // age가 없어서 오류가 발생함.
+```
+
+- 활용처
+
+```ts
+class Animal {
+  name: string;
+}
+class Cat extends Animal {
+  age: number;
+}
+class Dog extends Animal {
+  breez: string;
+}
+
+const 냐옹이: Cat = new Cat();
+const 댕댕이: Dog = new Dog();
+const 동물: Animal = new Animal();
+
+// 부모는 속성이 없고 자식에게만 필수 속성이 있다.
+// 상황이 달라진다.
+let 모든동물: Animal = 냐옹이;
+모든동물 = 댕댕이;
+
+function showInfo1(대상: Cat) {}
+function showInfo2(대상: Dog) {}
+showInfo1(냐옹이);
+showInfo2(댕댕이);
+
+// 일반적인 인스턴스 처리 함수
+function showInfo(대상: Animal) {}
+showInfo(냐옹이);
+showInfo(댕댕이);
+
+// Cat 은 필수 속성인 age 가 필요하지만 Animal 에는 없다.
+const 옹이: Cat = 동물; // age가 없어서 오류가 발생함.
+
+// Dog 는 필수 속성인 breeze 가 필요하지만 Animal 에는 없다.
+const 멍이: Dog = 동물; // brezze가 없어서 오류가 발생함.
+```
+
+## 상속에서의 재정의(Override)
+
+### 1. 메서드 오버라이드
+
+### 2. 속성 오버라이드
+
+- 실제로는 부모의 속성을 재구성 할 수 없음
+
+```ts
+class Animal {
+  name: string;
+}
+// 안됩니다.
+class Cat extends Animal {
+  name: number;
+}
+```

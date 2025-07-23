@@ -1,41 +1,17 @@
-interface Pet {
-  legs: number;
-  bark(): void;
-}
-interface Animal {
-  name: string;
-  age: number;
-}
-class Cat implements Pet, Animal {
-  name: string;
-  age: number;
-  legs: number;
-  constructor(name: string, age: number, legs: number) {
-    this.name = name;
-    this.age = age;
-    this.legs = legs;
+class Animal {
+  // 메서드
+  dance() {
+    console.log("나는 춤을 못춰");
   }
-  bark(): void {}
 }
-
-type AnimalPet = Pet & Animal;
-const d: AnimalPet = {
-  name: "댕댕이",
-  age: 2,
-  legs: 4,
-  bark() {
-    console.log("멍멍");
-  },
-};
-
-class Cat2 implements AnimalPet {
-  name: string;
-  age: number;
-  legs: number;
-  constructor(name: string, age: number, legs: number) {
-    this.name = name;
-    this.age = age;
-    this.legs = legs;
+class Cat extends Animal {
+  dance(): void {
+    console.log("나는 춤을 적극적으로 출거야");
   }
-  bark(): void {}
 }
+class Dog extends Animal {}
+const c = new Cat();
+c.dance();
+
+const d = new Dog();
+d.dance();
